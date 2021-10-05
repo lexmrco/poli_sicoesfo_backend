@@ -23,6 +23,7 @@
       "launchBrowser": true,
       "launchUrl": "api/ping",
       "environmentVariables": {
+        "DB_CONNECTION": "Server=ec2-44-194-6-121.compute-1.amazonaws.com;Port=5432;Database=d6ie81k1dovbjp;User Id=lzkenwyzbunrxo;Password=60135af710fa5d60868a9b522234af98c53c0916c904495206c700b6af2287c7;Integrated Security=true;SSL Mode=Require;Trust Server Certificate=true",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5000"

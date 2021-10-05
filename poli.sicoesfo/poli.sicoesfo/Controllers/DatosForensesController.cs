@@ -39,7 +39,18 @@ namespace poli.sicoesfo.Controllers
                     {
                         Id = item.Id,
                         FechaMuerte = item.FechaMuerte.HasValue ? string.Format("{0:yyyy-MM-dd}", item.FechaMuerte.Value) : "",
-                        HoraMuerte = item.HoraMuerte.HasValue ? new DateTime(item.HoraMuerte.Value.Ticks).ToString("HH:mm:ss"): ""
+                        HoraMuerte = item.HoraMuerte.HasValue ? new DateTime(item.HoraMuerte.Value.Ticks).ToString("HH:mm:ss"): "",
+                        TipoMuerte = item.TipoMuerte,
+                        Edad = item.Edad,
+                        EstadoCivil = item.EstadoCivil,
+                        Escolaridad = item.Escolaridad,
+                        FactorVulnerabilidad = item.FactorVulnerabilidad,
+                        TipoDeZona = item.TipoDeZona,
+                        Escenario = item.Escenario,
+                        ActividadDuranteHecho = item.ActividadDuranteHecho,
+                        Circunstancia = item.Circunstancia,
+                        Mecanismo = item.Mecanismo
+
                     });
                 }
 
@@ -60,7 +71,16 @@ namespace poli.sicoesfo.Controllers
                 DatoForense entity = new DatoForense()
                 {
                     Id = Guid.NewGuid(),
-                    FechaMuerte = DateTime.Parse(model.FechaMuerte),
+                    TipoMuerte = model.TipoMuerte,
+                    Edad = model.Edad,
+                    EstadoCivil = model.EstadoCivil,
+                    Escolaridad = model.Escolaridad,
+                    FactorVulnerabilidad = model.FactorVulnerabilidad,
+                    TipoDeZona = model.TipoDeZona,
+                    Escenario = model.Escenario,
+                    ActividadDuranteHecho = model.ActividadDuranteHecho,
+                    Circunstancia = model.Circunstancia,
+                    Mecanismo = model.Mecanismo
                 };
                 if (!string.IsNullOrEmpty(model.FechaMuerte))
                 {
@@ -73,7 +93,7 @@ namespace poli.sicoesfo.Controllers
                 await _unitOfWork.DatosForenses().CreateAsync(entity);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return BadRequest();
