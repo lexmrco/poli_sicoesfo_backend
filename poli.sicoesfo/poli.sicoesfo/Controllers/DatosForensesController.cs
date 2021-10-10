@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using poli.sicoesfo.Domain.Entities;
 using poli.sicoesfo.Domain.Filters;
 using poli.sicoesfo.Infrastructure;
-using poli.sicoesfo.Infrastructure.Domain.Repositories;
 using poli.sicoesfo.Models;
 
 namespace poli.sicoesfo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DatosForensesController : ControllerBase
     {
         private readonly ILogger _logger;

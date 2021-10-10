@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.19" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\poli.sicoesfo.Domain\poli.sicoesfo.Domain.csproj" />
     <ProjectReference Include="..\poli.sicoesfo.Infrastructure\poli.sicoesfo.Infrastructure.csproj" />
   </ItemGroup>
