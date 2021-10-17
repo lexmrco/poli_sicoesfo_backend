@@ -3,17 +3,24 @@ namespace poli.sicoesfo.Domain.Contracts
 {
     public abstract class Filter
     {
+         
         public Filter()
         {
-            defaultLimit = 20;
             maxLimit = 1000;
+            ItemsPerpage = defaultLimit;
+            Page = defaultPage;
         }
-        readonly int defaultLimit;
+        const int defaultLimit = 20;
+        const int defaultPage = 1;
         readonly int maxLimit;
-        int _limit;
-        public int Limit {
-            get { return _limit > 0 ? _limit : defaultLimit; }
-            set { _limit = value <= maxLimit ? value: maxLimit; }
+        int _itemsPerPage;
+        public int ItemsPerpage
+        {
+            get { return _itemsPerPage; }
+            set { _itemsPerPage = value <= maxLimit ? value: maxLimit; }
         }
+        public int Page { get; set; }
+        public string[] SorttBy { get; set; }
+        public bool[] SorttByDesc { get; set; }
     }
 }

@@ -27,7 +27,7 @@ tipodezona ""TipoDeZona"", escenario ""Escenario"", actividaddurantehecho ""Acti
 
         protected override void SetWhereClause(DatoForenseFilter filter)
         {
-            this._orderbyClause = "order by fechamuerte desc";
+            this._orderbyClause = "order by fechamuerte desc, horamuerte desc";
             base.SetWhereClause(filter);
         }
     }    

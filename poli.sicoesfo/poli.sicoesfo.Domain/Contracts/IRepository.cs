@@ -10,7 +10,7 @@ namespace poli.sicoesfo.Domain.Contracts
     {
         Task<TEntity> FirstOrDefault(TFilter filter);
         Task<TEntity> GetAsync<TypeofId>(TypeofId id);
-        Task<IEnumerable<TEntity>> GetAllAsync(TFilter filter);
+        Task<DataBaseResult<TEntity>> GetAllAsync(TFilter filter);
         Task<int> CreateAsync(TEntity entity);
         Task<int> UpdateAsync(TEntity entity);
         Task<int> DeleteAsync<TypeofId>(TypeofId id);        

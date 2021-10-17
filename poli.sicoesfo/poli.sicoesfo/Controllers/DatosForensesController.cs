@@ -15,7 +15,6 @@ namespace poli.sicoesfo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class DatosForensesController : ControllerBase
     {
         private readonly ILogger _logger;
@@ -26,15 +25,19 @@ namespace poli.sicoesfo.Controllers
             _logger = logger;
             _unitOfWork = unitOfWork;
         }
+
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<IEnumerable<DatoForenseModel>> Get()
+        public async Task<object> Get(int? page, int? rowsPerPage)
         {
+            page = page ?? 1;
+            rowsPerPage = rowsPerPage ?? 20;
             try
             {
-                var filter = new DatoForenseFilter();
+                var filter = new DatoForenseFilter() { ItemsPerpage = rowsPerPage.Value, Page = page.Value };
                 var result = new List<DatoForenseModel>();
-                var data = await _unitOfWork.DatosForenses().GetAllAsync(filter);
-                foreach (var item in data)
+                var dbResult = await _unitOfWork.DatosForenses().GetAllAsync(filter);
+                foreach (var item in dbResult.Data)
                 {
                     result.Add(new DatoForenseModel()
                     {
@@ -55,7 +58,7 @@ namespace poli.sicoesfo.Controllers
                     });
                 }
 
-                return result;
+                return new { page = dbResult.Page, rowsPerPage = dbResult.RowsPerPage, totalRows = dbResult.TotalRows, data = result };
             }
             catch (Exception ex)
             {
@@ -65,6 +68,7 @@ namespace poli.sicoesfo.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post(DatoForensePostModel model)
         {
             try

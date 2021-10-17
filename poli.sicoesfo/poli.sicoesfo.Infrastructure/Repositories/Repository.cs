@@ -32,6 +32,7 @@ namespace poli.sicoesfo.Infrastructure.Repositories
         protected string _baseClause;
         protected string _orderbyClause;
         protected string _whereClause;
+        protected string _pagination;
 
         public Repository(IDbConnection connection, IDbTransaction transaction = null)
         {
@@ -39,17 +40,31 @@ namespace poli.sicoesfo.Infrastructure.Repositories
             _transaction = transaction;
         }
 
+        private void BuildPPagination(TFilter filter)
+        {
+            int offset = (filter.Page * filter.ItemsPerpage) - filter.ItemsPerpage;
+            _pagination = $"limit {filter.ItemsPerpage} offset {offset}";
+        }
+
         public async virtual Task<TEntity> GetAsync<TTypeOfId>(TTypeOfId id)
         {
             return await Connection.QueryFirstOrDefaultAsync<TEntity>(string.Concat(SelectFirstSql), new { id }, _transaction);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(TFilter filter)
+        public async Task<DataBaseResult<TEntity>> GetAllAsync(TFilter filter)
         {
+            var dataResult = Activator.CreateInstance<DataBaseResult<TEntity>>();
             SetWhereClause(filter);
-            string query = string.Concat(SelectSql, " ", _whereClause, " ", _orderbyClause, $" LIMIT {filter.Limit};");
-            return await Connection.QueryAsync<TEntity>(query, filter, _transaction);
-            
+            BuildPPagination(filter);
+            string query = string.Concat(SelectSql, " ", _whereClause, " ", _orderbyClause, " ", _pagination);
+            string s2 = SelectSql.Substring(SelectSql.ToLower().IndexOf("from"));
+            string countQuery = string.Concat($"select count(*) {s2}", " ", _whereClause);
+            int count = await Connection.ExecuteScalarAsync<int>(countQuery, filter, _transaction);
+            dataResult.TotalRows = count;
+            dataResult.Page = filter.Page;
+            dataResult.RowsPerPage = filter.ItemsPerpage;
+            dataResult.Data = await Connection.QueryAsync<TEntity>(query, filter, _transaction);
+            return dataResult;            
         }
 
         public async virtual Task<TEntity> FirstOrDefault(TFilter filter)
